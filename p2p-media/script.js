@@ -10,6 +10,8 @@ const Peer = window.Peer;
   const meta = document.getElementById('js-meta');
   const sdkSrc = document.querySelector('script[src*=skyway]');
 
+  const { nowInSec, SkyWayAuthToken, SkyWayContext, SkyWayRoom, SkyWayStreamFactory, uuidV4 } = skyway_room;
+
   meta.innerText = `
     UA: ${navigator.userAgent}
     SDK: ${sdkSrc ? sdkSrc.src : 'unknown'}
