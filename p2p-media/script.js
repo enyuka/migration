@@ -12,6 +12,49 @@ const Peer = window.Peer;
 
   const { nowInSec, SkyWayAuthToken, SkyWayContext, SkyWayRoom, SkyWayStreamFactory, uuidV4 } = skyway_room;
 
+  const token = new SkyWayAuthToken({
+    jti: uuidV4(),
+    iat: nowInSec(),
+    exp: nowInSec() + 60 * 60 * 24,
+    scope: {
+      app: {
+        id: 'ここにアプリケーションIDをペーストしてください',
+        turn: true,
+        actions: ['read'],
+        channels: [
+          {
+            id: '*',
+            name: '*',
+            actions: ['write'],
+            members: [
+              {
+                id: '*',
+                name: '*',
+                actions: ['write'],
+                publication: {
+                  actions: ['write'],
+                },
+                subscription: {
+                  actions: ['write'],
+                },
+              },
+            ],
+            sfuBots: [
+              {
+                actions: ['write'],
+                forwardings: [
+                  {
+                    actions: ['write'],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    },
+  }).encode('ここにシークレットキーをペーストしてください');
+
   meta.innerText = `
     UA: ${navigator.userAgent}
     SDK: ${sdkSrc ? sdkSrc.src : 'unknown'}
