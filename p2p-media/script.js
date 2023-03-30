@@ -19,13 +19,9 @@ const Peer = window.Peer;
 
   (async () => {
     const { audio, video } = await SkyWayStreamFactory.createMicrophoneAudioAndCameraStream();
+    video.attach(localVideo);
+    await localVideo.play();
   })();
-
-  // Render local stream
-  localVideo.muted = true;
-  localVideo.srcObject = localStream;
-  localVideo.playsInline = true;
-  await localVideo.play().catch(console.error);
 
   const peer = (window.peer = new Peer({
     key: window.__SKYWAY_KEY__,
