@@ -17,12 +17,9 @@ const Peer = window.Peer;
     SDK: ${sdkSrc ? sdkSrc.src : 'unknown'}
   `.trim();
 
-  const localStream = await navigator.mediaDevices
-    .getUserMedia({
-      audio: true,
-      video: true,
-    })
-    .catch(console.error);
+  (async () => {
+    const { audio, video } = await SkyWayStreamFactory.createMicrophoneAudioAndCameraStream();
+  })();
 
   // Render local stream
   localVideo.muted = true;
