@@ -66,37 +66,16 @@ const Peer = window.Peer;
     await localVideo.play();
   })();
 
-  const peer = (window.peer = new Peer({
-    key: window.__SKYWAY_KEY__,
-    debug: 3,
-  }));
-
   // Register caller handler
-  callTrigger.addEventListener('click', () => {
-    // Note that you need to ensure the peer has connected to signaling server
-    // before using methods of peer instance.
-    if (!peer.open) {
-      return;
-    }
-
-    const mediaConnection = peer.call(remoteId.value, localStream);
-
-    mediaConnection.on('stream', async stream => {
-      // Render remote stream for caller
-      remoteVideo.srcObject = stream;
-      remoteVideo.playsInline = true;
-      await remoteVideo.play().catch(console.error);
+  callTrigger.addEventListener('click', async () => {
+    const room = await SkyWayRoom.Find(context, {
+      name: 'migration',
     });
 
-    mediaConnection.once('close', () => {
-      remoteVideo.srcObject.getTracks().forEach(track => track.stop());
-      remoteVideo.srcObject = null;
-    });
-
-    closeTrigger.addEventListener('click', () => mediaConnection.close(true));
+    const localRoomMember = room.join();
+    
+    closeTrigger.addEventListener('click', () => room.leave());
   });
-
-  peer.once('open', id => (localId.textContent = id));
 
   // Register callee handler
   peer.on('call', mediaConnection => {
