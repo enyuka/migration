@@ -68,7 +68,7 @@ const Peer = window.Peer;
 
   // Register caller handler
   callTrigger.addEventListener('click', async () => {
-    const room = await SkyWayRoom.Find(context, {
+    const room = await SkyWayRoom.FindOrCreate(context, {
       name: 'migration',
     });
 
